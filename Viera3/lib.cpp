@@ -91,6 +91,7 @@ conn::conn(string type)
 
 vector<bool> proccol::process_proximal()
 {
+
 	int activationAmount = 0;
 	bool predFlag = false;
 	vector<bool> mapCol;
@@ -114,14 +115,12 @@ vector<bool> proccol::process_proximal()
 	{
 		if (proxconns[x].strength <= conf.proxTerminationThreshold)
 		{
-			cout << "Pruning connection" << endl;
 			proxconns.erase(proxconns.begin()+x);
 			// To prevent vector errors, the loop needs to repeat until there are no more low strength connections
 			x = 0;
 		}
 	}
 
-	cout << activationAmount << endl;
 
 	//Calculate which nodes need to be activated
 	if (activationAmount >= conf.proxActivationThreshold)
@@ -133,8 +132,23 @@ vector<bool> proccol::process_proximal()
 			if (nodes[y].predictive == true)
 			{
 				predFlag = true;
-				nodes[y].active = true;
-				mapCol.push_back(true);
+			}
+		}
+
+		if (predFlag == true)
+		{
+			for (int y = 0; y < size(nodes); y++)
+			{
+				if (nodes[y].predictive == true)
+				{
+					nodes[y].active = true;
+					mapCol.push_back(true);
+				}
+				else
+				{
+					nodes[y].active = false;
+					mapCol.push_back(false);
+				}
 			}
 		}
 
@@ -143,7 +157,6 @@ vector<bool> proccol::process_proximal()
 		{
 			for (int y = 0; y < size(nodes); y++)
 			{
-				cout << "Activating node" << endl;
 				nodes[y].active = true;
 				mapCol.push_back(true);
 			}
@@ -163,6 +176,7 @@ vector<bool> proccol::process_proximal()
 
 void proccol::process_distal(vector<vector<bool>> map)
 {
+
 	//Adjust strengths of previous predictive states.
 	for (int x = 0; x < size(nodes); x++)
 	{
@@ -192,7 +206,6 @@ void proccol::process_distal(vector<vector<bool>> map)
 	{
 		if (nodes[x].predictive == true)
 		{
-			cout << "Inhibiting connection generation" << endl;
 			predFlag = true;
 		}
 	}
@@ -216,12 +229,10 @@ void proccol::process_distal(vector<vector<bool>> map)
 			{
 				if (map[x][y] == true)
 				{
-					cout << "Generating new connection" << endl;
 					conn n("distal");
 					selectedNode.distconns.push_back(n);
 					selectedNode.distconns[size(selectedNode.distconns) - 1].coord.push_back(x);
 					selectedNode.distconns[size(selectedNode.distconns) - 1].coord.push_back(y);
-					cout << "DEBUG: " << selectedNode.distconns[size(selectedNode.distconns) - 1] .coord[0] << " - " << selectedNode.distconns[size(selectedNode.distconns) - 1].coord[1] << endl;
 				}
 			}
 		}
@@ -233,24 +244,18 @@ void proccol::process_distal(vector<vector<bool>> map)
 		int activationAmount = 0;
 		for (int y = 0; y < size(nodes[x].distconns); y++)
 		{
-			cout << "DEBUG" << endl;
-			cout << nodes[x].distconns[y].coord[0] << " " << nodes[x].distconns[y].coord[1] << endl;
-			cout << size(map) << endl;
-			cout << size(map[x]) << endl;
-
 			if (map[nodes[x].distconns[y].coord[0]][nodes[x].distconns[y].coord[1]] == true)
 			{
-				cout << "DEBUG 2" << endl;
 				activationAmount++;
 			}
 		}
 
 		if (activationAmount > conf.distalActivationThreshold)
 		{
-			cout << "Node is predictive" << endl;
 			nodes[x].predictive = true;
 		}
 	}
+
 }
 
 void procunit::cycle()
@@ -284,4 +289,6 @@ void procunit::cycle()
 		}
 		cout << endl;
 	}
+
+	cout << "========" << endl;
 }
