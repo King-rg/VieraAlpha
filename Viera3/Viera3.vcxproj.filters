@@ -24,12 +24,18 @@
     <ClCompile Include="encoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="datacollection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="encoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="datacollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

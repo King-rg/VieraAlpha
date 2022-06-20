@@ -1,7 +1,3 @@
-﻿  lib.cpp
-C:\Users\12037\source\repos\King-rg\VieraAlpha\Viera3\lib.h(24,967): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\12037\source\repos\King-rg\VieraAlpha\Viera3\lib.cpp(104,55): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\12037\source\repos\King-rg\VieraAlpha\Viera3\lib.cpp(109,50): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\12037\source\repos\King-rg\VieraAlpha\Viera3\lib.cpp(189,74): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\12037\source\repos\King-rg\VieraAlpha\Viera3\lib.cpp(198,69): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+﻿  Viera3.cpp
+C:\Users\12037\source\repos\King-rg\VieraAlpha\Viera3\Viera3.cpp(18,946): warning C4305: 'initializing': truncation from 'double' to 'float'
   Viera3.vcxproj -> C:\Users\12037\source\repos\King-rg\VieraAlpha\x64\Debug\Viera3.exe

@@ -127,11 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="datacollection.cpp" />
     <ClCompile Include="encoder.cpp" />
     <ClCompile Include="lib.cpp" />
     <ClCompile Include="Viera3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="datacollection.h" />
     <ClInclude Include="encoder.h" />
     <ClInclude Include="lib.h" />
   </ItemGroup>

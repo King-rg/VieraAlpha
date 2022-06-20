@@ -39,57 +39,57 @@ struct util
 
 // CONSTRUCTORS
 
-procunit::procunit()
+procunit::procunit(SDR input)
 {
 	util utilities;
 	id = utilities.gen_uuid();
 
 	for (int x = 0; x < childamount; x++)
 	{
-		proccol n;
+		proccol n(input);
 		columns.push_back(n);
 	}
 }
 
-proccol::proccol()
+proccol::proccol(SDR input)
 {
 	util utilities;
 	id = utilities.gen_uuid();
 
 	for (int x = 0; x < childamount; x++)
 	{
-		procnode n;
+		procnode n(input);
 		nodes.push_back(n);
 	}
 
 	for (int x = 0; x < connamount; x++)
 	{
-		conn n("proximal");
+		conn n("proximal", input);
 		proxconns.push_back(n);
 	}
 }
 
-procnode::procnode()
+procnode::procnode(SDR input)
 {
 	util utilities;
 	id = utilities.gen_uuid();
 }
 
-conn::conn(string type)
+conn::conn(string type, SDR input)
 {
 	util utilities;
 	id = utilities.gen_uuid();
 
 	if (type.compare("proximal") == 0)
 	{
-		coord.push_back(rand() % int(conf.input.resolution));
-		coord.push_back(rand() % int(conf.input.resolution));
+		coord.push_back(rand() % int(input.resolution));
+		coord.push_back(rand() % int(input.resolution));
 	}
 
 	strength = 1 + (rand() % 100);
 }
 
-vector<bool> proccol::process_proximal()
+vector<bool> proccol::process_proximal(SDR input)
 {
 
 	int activationAmount = 0;
@@ -99,7 +99,7 @@ vector<bool> proccol::process_proximal()
 	//Calculate activationAmount
 	for (int x = 0; x < size(proxconns); x++)
 	{	
-		if (conf.input.content[proxconns[x].coord[0]][proxconns[x].coord[1]] == 1)
+		if (input.content[proxconns[x].coord[0]][proxconns[x].coord[1]] == 1)
 		{
 			proxconns[x].strength = proxconns[x].strength + 30 - (sqrt(10 * proxconns[x].strength));
 			activationAmount++;
@@ -174,7 +174,7 @@ vector<bool> proccol::process_proximal()
 	return mapCol;
 }
 
-void proccol::process_distal(vector<vector<bool>> map)
+void proccol::process_distal(vector<vector<bool>> map, SDR input)
 {
 
 	//Adjust strengths of previous predictive states.
@@ -229,7 +229,7 @@ void proccol::process_distal(vector<vector<bool>> map)
 			{
 				if (map[x][y] == true)
 				{
-					conn n("distal");
+					conn n("distal", input);
 					selectedNode.distconns.push_back(n);
 					selectedNode.distconns[size(selectedNode.distconns) - 1].coord.push_back(x);
 					selectedNode.distconns[size(selectedNode.distconns) - 1].coord.push_back(y);
@@ -258,18 +258,18 @@ void proccol::process_distal(vector<vector<bool>> map)
 
 }
 
-void procunit::cycle()
+void procunit::cycle(SDR input)
 {
 	//Run proximal processing cycle on every column
 	vector<vector<bool>> map;
 	for (int x = 0; x < size(columns); x++)
 	{
-		map.push_back(columns[x].process_proximal());
+		map.push_back(columns[x].process_proximal(input));
 	}
 
 	for (int x = 0; x < size(columns); x++)
 	{
-		columns[x].process_distal(map);	
+		columns[x].process_distal(map, input);
 	}
 
 	//Print activation map
